@@ -44,14 +44,33 @@ namespace LAB03_03
 
         private void SetData(Student student)
         {
-            DataRow row = data.NewRow();
-            row["Số TT"] = Index;
-            row["Mã Số SV"] = student.StudentID;
-            row["Tên Sinh Viên"] = student.FullName;
-            row["Khoa"] = student.Faculty;
-            row["Điểm TB"] = student.AverageScore;
-            data.Rows.Add(row);
-            Index++;
+            if (isExist(student))
+            {
+                MessageBox.Show("Đã tồn tại sinh viên với mã này", "Existing Error", MessageBoxButtons.OK);
+            }
+            else
+            {
+                DataRow row = data.NewRow();
+                row["Số TT"] = Index;
+                row["Mã Số SV"] = student.StudentID;
+                row["Tên Sinh Viên"] = student.FullName;
+                row["Khoa"] = student.Faculty;
+                row["Điểm TB"] = student.AverageScore;
+                data.Rows.Add(row);
+                Index++;
+            }
+        }
+
+        private bool isExist(Student student)
+        {
+            foreach (DataRow item in data.Rows)
+            {
+                if (item["Mã Số SV"].Equals(student.StudentID))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
