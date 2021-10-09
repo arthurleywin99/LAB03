@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using LAB03_03.Model;
@@ -33,14 +34,30 @@ namespace LAB03_03
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            Student student = new Student()
+            if (txtStudentID.Text == "" || txtFullName.Text == "" || txtAverageScore.Text == "")
             {
-                StudentID = txtStudentID.Text,
-                FullName = txtFullName.Text,
-                Faculty = cboFaculty.Text,
-                AverageScore = float.Parse(txtAverageScore.Text)
-            };
-            this.sender(student);
+                MessageBox.Show("Phải điền dữ liệu vào tất cả các trường", "Error", MessageBoxButtons.OK);
+            }
+            else
+            {
+                Student student = new Student()
+                {
+                    StudentID = txtStudentID.Text,
+                    FullName = txtFullName.Text,
+                    Faculty = cboFaculty.Text,
+                    AverageScore = float.Parse(txtAverageScore.Text)
+                };
+                this.sender(student);
+                SetDefault();
+            }
+        }
+
+        private void SetDefault()
+        {
+            txtStudentID.Text = "";
+            txtFullName.Text = "";
+            cboFaculty.SelectedIndex = 0;
+            txtAverageScore.Text = "";
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -48,39 +65,70 @@ namespace LAB03_03
             this.Close();
         }
 
-        private void isValidating(object sender, CancelEventArgs e)
+        private void txtStudentID_Validating(object sender, CancelEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtStudentID.Text))
+            if (string.IsNullOrWhiteSpace(txtStudentID.Text) || string.IsNullOrEmpty(txtStudentID.Text))
             {
                 e.Cancel = true;
-                errorProvider.SetError(txtStudentID, "Không được để trống mã sinh viên");
+                txtStudentID.Focus();
+                errorProvider.SetError(txtStudentID, "Mã sinh viên không được để trống");
+            }
+            else if (txtStudentID.Text.Any(ch => !char.IsLetterOrDigit(ch)))
+            {
+                e.Cancel = true;
+                txtStudentID.Focus();
+                errorProvider.SetError(txtStudentID, "Mã sinh viên không chứa ký tự đặc biệt");
             }
             else
             {
                 e.Cancel = false;
                 errorProvider.SetError(txtStudentID, null);
             }
+        }
 
-            if (string.IsNullOrWhiteSpace(txtFullName.Text))
+        private void txtFullName_Validating(object sender, CancelEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtFullName.Text) || string.IsNullOrEmpty(txtFullName.Text))
             {
                 e.Cancel = true;
-                errorProvider.SetError(txtFullName, "Không được để trống họ tên sinh viên");
+                txtFullName.Focus();
+                errorProvider.SetError(txtFullName, "Không được để trống");
+            }
+            else if (!Regex.IsMatch(txtFullName.Text, @"^[A-Za-z ]+$"))
+            {
+                e.Cancel = true;
+                txtFullName.Focus();
+                errorProvider.SetError(txtFullName, "Tên sinh viên không chứa số hoặc ký tự đặc biệt");
             }
             else
             {
-                e.Cancel = true;
+                e.Cancel = false;
                 errorProvider.SetError(txtFullName, null);
             }
+        }
 
-            if (string.IsNullOrWhiteSpace(txtAverageScore.Text))
+        private void txtAverageScore_Validating(object sender, CancelEventArgs e)
+        {
+            float number;
+            bool check;
+            check = float.TryParse(txtAverageScore.Text, out number);
+            if (string.IsNullOrWhiteSpace(txtAverageScore.Text) || string.IsNullOrEmpty(txtAverageScore.Text))
             {
                 e.Cancel = true;
-                errorProvider.SetError(txtAverageScore, "Không được để trống điểm");
+                txtAverageScore.Focus();
+                errorProvider.SetError(txtAverageScore, "Không được để trống");
             }
-            else if (float.Parse(txtAverageScore.Text) < 0 || float.Parse(txtAverageScore.Text) > 10)
+            else if (!check)
             {
                 e.Cancel = true;
-                errorProvider.SetError(txtAverageScore, "Điểm có giá trị từ 0 - 10");
+                txtAverageScore.Focus();
+                errorProvider.SetError(txtAverageScore, "Phải nhập dữ liệu là số thực");
+            }
+            else if (number < 0 || number > 10)
+            {
+                e.Cancel = true;
+                txtAverageScore.Focus();
+                errorProvider.SetError(txtAverageScore, "Điểm phải nằm trong khoảng từ 0 - 10");
             }
             else
             {

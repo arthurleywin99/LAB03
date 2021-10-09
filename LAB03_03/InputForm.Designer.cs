@@ -168,6 +168,7 @@ namespace LAB03_03
             this.txtStudentID.Name = "txtStudentID";
             this.txtStudentID.Size = new System.Drawing.Size(202, 27);
             this.txtStudentID.TabIndex = 0;
+            this.txtStudentID.Validating += new System.ComponentModel.CancelEventHandler(this.txtStudentID_Validating);
             // 
             // tableLayoutPanel3
             // 
@@ -196,6 +197,7 @@ namespace LAB03_03
             this.txtFullName.Name = "txtFullName";
             this.txtFullName.Size = new System.Drawing.Size(202, 27);
             this.txtFullName.TabIndex = 0;
+            this.txtFullName.Validating += new System.ComponentModel.CancelEventHandler(this.txtFullName_Validating);
             // 
             // tableLayoutPanel5
             // 
@@ -254,7 +256,7 @@ namespace LAB03_03
             this.txtAverageScore.Name = "txtAverageScore";
             this.txtAverageScore.Size = new System.Drawing.Size(202, 27);
             this.txtAverageScore.TabIndex = 0;
-            this.txtAverageScore.Validating += new System.ComponentModel.CancelEventHandler(this.isValidating);
+            this.txtAverageScore.Validating += new System.ComponentModel.CancelEventHandler(this.txtAverageScore_Validating);
             // 
             // tableLayoutPanel6
             // 

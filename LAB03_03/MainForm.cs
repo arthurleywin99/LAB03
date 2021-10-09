@@ -77,8 +77,7 @@ namespace LAB03_03
         {
             DataTable TempData = new DataTable();
             InitDataTable(TempData);
-            string text = txtSearch.Text;
-            if (text == string.Empty)
+            if (txtSearch.Text == string.Empty)
             {
                 dgvStudent.DataSource = data;
             }
