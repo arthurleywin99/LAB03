@@ -88,7 +88,7 @@ namespace LAB03_03
                 txtFullName.Focus();
                 errorProvider.SetError(txtFullName, "Không được để trống");
             }
-            else if (!Regex.IsMatch(txtFullName.Text, @"^[A-Za-z ]+$"))
+            else if (!Regex.IsMatch(UnicodeToAscii(txtFullName.Text), @"^[A-Za-z ]+$"))
             {
                 e.Cancel = true;
                 txtFullName.Focus();
@@ -129,6 +129,35 @@ namespace LAB03_03
                 e.Cancel = false;
                 errorProvider.SetError(txtAverageScore, null);
             }
+        }
+
+        private readonly string[] VietNameseChar = new string[]
+        {
+            "aAeEoOuUiIdDyY",
+            "áàạảãâấầậẩẫăắằặẳẵ",
+            "ÁÀẠẢÃÂẤẦẬẨẪĂẮẰẶẲẴ",
+            "éèẹẻẽêếềệểễ",
+            "ÉÈẸẺẼÊẾỀỆỂỄ",
+            "óòọỏõôốồộổỗơớờợởỡ",
+            "ÓÒỌỎÕÔỐỒỘỔỖƠỚỜỢỞỠ",
+            "úùụủũưứừựửữ",
+            "ÚÙỤỦŨƯỨỪỰỬỮ",
+            "íìịỉĩ",
+            "ÍÌỊỈĨ",
+            "đ",
+            "Đ",
+            "ýỳỵỷỹ",
+            "ÝỲỴỶỸ"
+        };
+
+        public string UnicodeToAscii(string str)
+        {
+            for (int i = 1; i < VietNameseChar.Length; i++)
+            {
+                for (int j = 0; j < VietNameseChar[i].Length; j++)
+                    str = str.Replace(VietNameseChar[i][j], VietNameseChar[0][i - 1]);
+            }
+            return str;
         }
     }
 }
