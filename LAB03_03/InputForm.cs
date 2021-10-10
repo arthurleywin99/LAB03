@@ -40,13 +40,7 @@ namespace LAB03_03
             }
             else
             {
-                Student student = new Student()
-                {
-                    StudentID = txtStudentID.Text,
-                    FullName = txtFullName.Text,
-                    Faculty = cboFaculty.Text,
-                    AverageScore = float.Parse(txtAverageScore.Text)
-                };
+                Student student = new Student(txtStudentID.Text, txtFullName.Text, cboFaculty.Text, float.Parse(txtAverageScore.Text));
                 this.sender(student);
                 SetDefault();
             }
